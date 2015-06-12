@@ -7,8 +7,7 @@
 *   Proporciona los metodos para crear, leer y borrar cookies
 **/
 
-function createCookie(name,value,seconds) 
-{
+function createCookie(name,value,seconds) {
     if (seconds) 
     {
 	    var date = new Date();

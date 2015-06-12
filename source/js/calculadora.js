@@ -13,7 +13,7 @@
 ///Ej: multiplicationFactor = 3, Serie = 3,6,9,12,...,n*3
 function fillSelectMonth(select, initialValue, finalValue, multiplicationFactor){
 	var valueOption = 0;
-	for(var i = initialValue; i <= finalValue; i++){
+	for(var i=initialValue; i <= finalValue; i++){
 		valueOption = i * multiplicationFactor;
 		select.append('<option value="' + valueOption  + '">' + valueOption  + ((valueOption > 1)? ' Meses' : ' Mes') + '</option>');
 	}
@@ -26,7 +26,7 @@ function fillSelectMonth(select, initialValue, finalValue, multiplicationFactor)
 ///finalValue: valor final de la serie
 ///multiplicationFactor: multiplicador de la serie, 
 ///Ej: multiplicationFactor = 3, Serie = 3,6,9,12,...,n*3
-function fillSelectYear(idSelect, initialValue, finalValue, multiplicationFactor)
+function fillSelectYear (idSelect, initialValue, finalValue, multiplicationFactor)
 {
 	var valueOption = 0;
 	
@@ -204,8 +204,7 @@ function paintTable(lstQuota,lstNameColumns, divTable, lstDataType, includeTotal
 	divTable.fadeIn(400);
 }
 
-function formatNumber(value)
-{
+function formatNumber(value){
 	//si es un numero grande lo formateamos (separadores de miles)
 	//de lo contrario lo entregamos con con una precision de 3 decimales
 	if(value>1000)
