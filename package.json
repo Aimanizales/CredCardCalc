@@ -1,0 +1,31 @@
+{
+  "name": "Cred-Card-Calc",
+  "version": "0.0.0",
+  "description": "",
+  "scripts": {
+    "test": ""
+  },
+  "keywords": [
+    "economy",
+    "credit card"
+  ],
+  "author": "Aiman Abdel",
+  "license": "copyright",
+  "folders": {
+    "source": "./source/",
+    "build": "./dist/"
+  },
+  "dependencies": {
+    "jquery": "^2.1.4",
+    "normalizecss": "^3.0.0"
+  },
+  "devDependencies": {
+    "del": "^1.1.1",
+    "gulp": "^3.8.11",
+    "gulp-cdnizer": "^1.1.5",
+    "gulp-cssmin": "^0.1.7",
+    "gulp-less": "^3.0.3",
+    "gulp-load-plugins": "^0.10.0",
+    "gulp-rename": "^1.2.2"
+  }
+}

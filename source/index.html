@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Calcular compra tarjeta de cr&eacute;</title>
+	<link href='http://fonts.googleapis.com/css?family=Quicksand:300,400,700' rel='stylesheet' type='text/css'>
+	<!-- <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:300,400,500|Varela' rel='stylesheet' type='text/css'> -->
+	<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+	<header class="header">
+		<h1>CALCULAR COMPRA</h1>
+		<h2>TARJETA DE CR&Eacute;DITO</h2>
+	</header>
+
+	<section class="inputFields">
+		<label for="purchaseInput">VALOR COMPRA:</label>
+		<input class="purchaseInput" id="purchaseInput" type="text" name="" maxlength="11" title="Indique aqu&iacute; el valor en pesos de su compra" onchange="calcule()" value="0">
+		<br>
+
+		<label for="cuotaSelect">N&uacute;mero de cuotas: </label>
+		<select class="cuotaSelect" id="cuotaSelect" name="cuotaSelect" onchange="calcule()"></select>
+		<br>
+
+		<label for="interestRate">Tasa de inter&eacute;s Mensual: </label>
+		<input class="interestRate" id="interestRate" type="text" value="2" name="interestRate" maxlength="4" title="Digite la tasa de inter&eacute;s mensual que le cobra su entidad."> (0% > 2,19%) <br>
+		<div class="limit_tasa">La cifra excede el valor de las tasas del mercado. Una cifra mayor a 2,19% está por encima de la tasa de usura.</div>
+		
+		<a class="button" href="javascript:calcule()">CALCULAR</a>
+		<a class="button" href="javascript:clean()">LIMPIAR</a>
+	</section>
+
+	<section class="outputResult">
+		<p class="nota_cuotas">
+			Si el valor de su compra fue $<strong class="valor_compra">0</strong>, el pago total ser&aacute; aproximadamente de $<strong class="pago_total">0</strong>
+		</p>
+		<p class="nota_cuota_value">
+			Cuota mensual a pagar: $<span class="quotaValue">0</span>
+		</p>
+		<!-- <div class="table_result"></div> -->
+		<table class="table_result">
+			
+		</table>
+	</section>
+
+	<!-- <input type="hidden" name="ctl35$Calculadora1$hfPrefijo" id="ctl35_Calculadora1_hfPrefijo" value="TarjetaCredito"> -->
+	<!--p>
+	NOTA: Los c&aacute;lculos dados en esta calculadora son una aproximaci&oacute;n a la cuota que le cobrar&aacute; su banco por la utilizaci&oacute;n de la tarjeta de cr&eacute;dito. Sin embargo, la suma puede cambiar en comparaci&oacute;n con la que le cobra su entidad financiera porque:
+				<ul>
+					<li>Puede incluir el cobro de la cuota de manejo de la tarjeta de cr&eacute;dito.</li>
+					<li>Las tasas de los bancos son variables mes a mes y el saldo se puede alterar por el alza o baja de la tasa.</li>
+					<li>La entidad financiera puede incluir el valor del seguro.</li>
+				</ul>
+				Recuerde que la tasa de inter&eacute;s que debe utilizar es mensual vencida. En caso de necesitarlo, utilice nuestra calculadora <a href="http://www.finanzaspersonales.com.co/calculadoras/articulo/conversion-tasas/39936" target="_blank">Conversi&oacute;n de Tasas de Inter&eacute;s</a> para obtener la tasa adecuada para hacer el c&aacute;lculo.
+			</p-->
+	<script type="text/javascript" src="scripts/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="scripts/Cookie.js"></script>
+	<script type="text/javascript" src="scripts/functions.js"></script>
+	<script type="text/javascript" src="scripts/generales.js"></script>
+	<script type="text/javascript" src="scripts/calculadora.js"></script>
+	<script type="text/javascript" src="scripts/calculadoratarjetacredito.js"></script>
+</body>
+</html>
