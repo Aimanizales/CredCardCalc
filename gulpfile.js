@@ -69,10 +69,10 @@ gulp.task('assets', function () {
 gulp.task('css', function () {
   gulp.src(dir.source + 'less/main.less')
       .pipe($.less())
-      .pipe(gulp.dest(dir.build + 'css'))
+      .pipe(gulp.dest(dir.build + 'css'));
       // .pipe($.cssmin())
       // .pipe($.rename({ suffix: '.min' }))
-      .pipe(gulp.dest(dir.build + 'css'));
+      //.pipe(gulp.dest(dir.build + 'css'));
 });
 
 gulp.task('watch:css', function () {
