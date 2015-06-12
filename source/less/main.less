@@ -1,0 +1,132 @@
+body{
+  background: #999;
+  font-family: 'Quicksand', sans-serif;
+  margin: 0;
+  min-width: 600;
+}
+
+.header {
+  h1{
+    font-weight: 300;
+    background: #456;
+    color: #ccc;
+    padding: 6px 20px;
+    margin: 0;
+  }
+
+  h2{
+    background: #234;
+    margin: 0;
+    padding: 5px 23px;
+    font-size: 1.2em;
+    color: rgb(161, 161, 161);
+  }
+}
+
+.inputFields{
+  background: #666;
+  padding: 15px 25px;
+
+  label{
+    display: inline-block;
+    width: 222px;
+    margin-bottom: 10px;
+  }
+
+  .purchaseInput{
+    font-size: 1.5em;
+    font-family: 'Source Code Pro', sans-serif;
+  }
+
+  .cuotaSelect{
+    font-size: 1.2em;
+    font-family: 'Source Code Pro', sans-serif;
+    border: none;
+    color: #555;
+  }
+
+  .interestRate{
+    font-size: 1.2em;
+    font-family: 'Source Code Pro', sans-serif;
+    border: none;
+    color: #555;
+    width: 50px;
+  }
+
+  .limit_tasa{
+    color: #57261B;
+    background: #CDBDBD;
+    display: none;
+    font-size: 0.8em;
+    padding: 8px 20px;
+    width: 340px;
+    position: absolute;
+    left: 430px;
+    top: 178px;
+  }
+
+  .button{
+    display: inline-block;
+    background: #234;
+    padding: 9px 17px;
+    text-decoration: none;
+    color: #ccc;
+    transition: all 200ms ease-out;
+
+    &:hover{
+      background: #567;
+    }
+  }
+}
+
+.outputResult {
+
+  .nota_cuotas, .nota_cuota_value{
+    margin-left: 32px;
+  }
+
+  .table_result{
+    float: none;
+    text-align: right;
+    width: 95%;
+    margin: 0 auto 50px;
+    box-shadow: 2px 2px 12px rgba(0,0,0,0.5);
+
+    tbody{
+      tr{
+        &:nth-child(even){
+          background: #adadad;
+        }
+
+        &:nth-child(12n+1){
+          background: #c3c3c3;
+        }
+      }
+    }
+
+    th{
+      background: #345;
+      font-weight: bold;
+      padding: 10px;
+      color: #bbb;
+    }
+
+    tfoot{
+      background: #2F2F2F;
+      font-weight: bold;
+      color: #B8B8B8;
+    }
+
+    td{
+      padding: 10px;
+    }
+  }
+}
+
+.tips{
+  font-size: 0.7em;
+}
+
+.quotaValue{
+  font-weight: bold;
+}

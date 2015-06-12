@@ -25,11 +25,6 @@ var pkg = require('./package.json'),
 gulp.task('default', ['assets', 'watch:assets', 'css', 'watch:css', 'watch:index', 'index', 'watch:js', 'js']);
 
 /**
- * Prod task
- */
-gulp.task('prod', ['assets', 'css']);
-
-/**
  * Index
  */
 gulp.task('watch:index', function () {
