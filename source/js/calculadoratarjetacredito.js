@@ -1,4 +1,5 @@
-//calcula la cuota mensual de la tarjeta de credito
+var creditCard = {};
+
 var ok,
     MAX_QUOTAS = 36,
     MAX_INTEREST_RATE = 2.19,
@@ -23,7 +24,6 @@ function calcule() {
   $quotaValueText.html('0');
   $tableResult.empty();
 
-  //si la tasa excede el límite de la usura
   if (interestSelected !== '' && parseFloat(interestSelected) > MAX_INTEREST_RATE) {
     ok = false;
     $limitTasa.show('400');
@@ -54,7 +54,6 @@ function calcule() {
 
 //pago con tarjeta de crédito
 function pagoTarjetaCredito(purchaseValue, numQuotasSelected, interestSelected, _po, _R) {
-  
   //validamos que esten todos los campos llenos
   if (purchaseValue && numQuotasSelected && interestSelected) {
     if (purchaseValue > 0 && numQuotasSelected > 0 && interestSelected > 0) {

@@ -1,17 +1,4 @@
-﻿/**
-*   @author Fabian Dario Moreno
-*   @version 1.0
-*   @date: 11/Abril/2011
-*   @description:
-*   Libreria con funciones financieras
-**/
-///llenamos un combo con una serie de datos
-///idSelect: id del select
-///initialValue: valor inicial de la serie
-///finalValue: valor final de la serie
-///multiplicationFactor: multiplicador de la serie, 
-///Ej: multiplicationFactor = 3, Serie = 3,6,9,12,...,n*3
-function fillSelectMonth(select, initialValue, finalValue, multiplicationFactor){
+﻿function fillSelectMonth(select, initialValue, finalValue, multiplicationFactor){
 	var valueOption = 0;
 	for(var i=initialValue; i <= finalValue; i++){
 		valueOption = i * multiplicationFactor;
@@ -20,33 +7,7 @@ function fillSelectMonth(select, initialValue, finalValue, multiplicationFactor)
 }
 
 
-///llenamos un combo con una serie de datos
-///idSelect: id del select
-///initialValue: valor inicial de la serie
-///finalValue: valor final de la serie
-///multiplicationFactor: multiplicador de la serie, 
-///Ej: multiplicationFactor = 3, Serie = 3,6,9,12,...,n*3
-function fillSelectYear (idSelect, initialValue, finalValue, multiplicationFactor)
-{
-	var valueOption = 0;
-	
-	for(var x=initialValue ; x <= finalValue; x++)
-	{
-		valueOption = x * multiplicationFactor;
-		
-		if(valueOption  > 1)
-			$("#" + idSelect).append('<option value="' + valueOption  + '">' + valueOption  + ' Años</option>');
-		else
-			$("#" + idSelect).append('<option value="' + valueOption  + '">' + valueOption  + ' Año</option>');
-	}
-}
-
-///agrega los eventos keyDown y keyUp al text input con id "idTextBox"
-//para que solo deje ingresar numeros y puntos
-//nameFunction: Nombre de la funcion que se ejecuta al cambiar el 
-//valor del textinput
-function setTextInputAsDecimalFormat(idTextBox, nameFunction, integer)
-{
+function setTextInputAsDecimalFormat(idTextBox, nameFunction, integer){
 	idTextBox.keydown(function(event){
 		var keyCode = event.keyCode;
 		
@@ -81,10 +42,6 @@ function setTextInputAsDecimalFormat(idTextBox, nameFunction, integer)
 	});
 }
 
-///agrega los eventos keyDown y keyUp al text input con id "idTextBox"
-//para que solo deje ingresar numeros y puntos
-//nameFunction: Nombre de la funcion que se ejecuta al cambiar el 
-//valor del textinput
 function setTextInputAsIntegerFormat(textBox, nameFunction, integer){
 	textBox.keydown(function(event) {
 		var keyCode = event.keyCode;
@@ -98,10 +55,9 @@ function setTextInputAsIntegerFormat(textBox, nameFunction, integer){
 		{
 			return true;
 		}
-
-		
 		return false;
 	});
+
 	textBox.keyup(function(event){
 		var keyCode = event.keyCode;
 		
@@ -127,12 +83,7 @@ function setTextInputAsIntegerFormat(textBox, nameFunction, integer){
 function paintTable(lstQuota,lstNameColumns, divTable, includeTotals){
 	paintTable(lstQuota,lstNameColumns, divTable, null , includeTotals);
 }
-///Pinta un arreglo como tabla
-//lstQuota: Datos
-//lstNameColumns: labels de tabla
-//divTable: Nombre del div que contiene la tabla
-//lstDataType: tipo de dato de la columna (%=porcentaje, s= string, '' = numero, h=oculto)
-//includeTotals: bandera que indica si la tabla incluye fila con totales o no
+
 function paintTable(lstQuota,lstNameColumns, divTable, lstDataType, includeTotals){
 	var repeaterHtml = '<thead>';
 	window.totalIntereses = 0;
@@ -228,7 +179,7 @@ function formatAsCurrency(value)
 //obtiene los valores almacenados de los componentes en cookies
 function getParams(lstComponents){
 	for(var x=0 ; x<lstComponents.length; x++){
-		var cookieComponent = readCookie(lstComponents[x]);
+		var cookieComponent = cookieClosure.readCookie(lstComponents[x]);
 		if(cookieComponent != null)
 			$("#"+lstComponents[x]).val(cookieComponent);
 	}
@@ -237,9 +188,9 @@ function getParams(lstComponents){
 //alamcena los valores de los componentes en cookies
 function setParams(lstComponents){
 	for(var x=0 ; x<lstComponents.length; x++){
-		var cookieComponent = readCookie(lstComponents[x]);
+		var cookieComponent = cookieClosure.readCookie(lstComponents[x]);
 		if(cookieComponent != null){
-			createCookie(lstComponents[x],$("#"+lstComponents[x]).val() ,2592000);
+			cookieClosure.createCookie(lstComponents[x],$("#"+lstComponents[x]).val() ,2592000);
 		}
 	}
 }
@@ -248,6 +199,43 @@ function setParams(lstComponents){
 function cleanComponents(lstComponents){
 	for(var x=0 ; x<lstComponents.length; x++){
 		lstComponents[x].val('');
-		eraseCookie(lstComponents[x]);
+		cookieClosure.eraseCookie(lstComponents[x]);
 	}
+}
+
+
+//Reemplaza 'palabra' por 'palabraNueva' data la cadena de texto 'text'
+function replaceAll(text, palabra, palabraNueva ){
+  var textReplace = text.toString();
+  while (textReplace.indexOf(palabra) != -1)
+    textReplace = textReplace.replace(palabra,palabraNueva);
+  return textReplace;
+}
+
+function isNumberKey(evt) {
+  var charCode = (evt.which) ? evt.which : event.keyCode;
+  if (charCode > 31 && (charCode < 48 || charCode > 57)){
+    return false;
+  }
+
+  return true;
+}
+
+function maskText(str, textbox, mod, delim) {
+  str = replaceAll(str, '.', '');
+	str = replaceAll(str, ',', '');
+	var arr = str.split("");
+  var itemMask = '';
+  var contAct = 0;
+  for (var i = arr.length - 1; i >= 0; i--) {
+    if (contAct == mod) {
+      itemMask = arr[i] + '.' + itemMask;
+      contAct = 0;
+    } else {
+      itemMask = arr[i] + itemMask;
+    }
+    contAct = parseInt(contAct) + 1;
+  }
+  //alert(itemMask);
+  textbox.value = itemMask;
 }
