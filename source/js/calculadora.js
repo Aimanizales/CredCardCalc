@@ -12,47 +12,30 @@ function setTextInputAsDecimalFormat(idTextBox, nameFunction, integer){
 		var keyCode = event.keyCode;
 		
 		//solo dejamos pasar numeros y puntos
-		if((keyCode > 34 && keyCode < 58) ||
-		(keyCode > 95 && keyCode < 106)||
-		keyCode == 8 ||keyCode == 12 ||
-		keyCode == 9 ||keyCode == 13 ||
-		keyCode == 110 || keyCode == 190)
-		{
+		if((keyCode > 34 && keyCode < 58) || (keyCode > 95 && keyCode < 106) || keyCode == 8 || keyCode == 12 || keyCode == 9 || keyCode == 13 || keyCode == 110 || keyCode == 190) {
 			return true;
 		}
-		
 		return false;
 	});
+
 	idTextBox.keyup(function(event){
 		var keyCode = event.keyCode;
 		
 		//solo dejamos pasar numeros y puntos
-		if((keyCode > 34 && keyCode < 58) ||
-		(keyCode > 95 && keyCode < 106)||
-		keyCode == 8 ||keyCode == 12 ||keyCode == 13 ||
-		keyCode == 110 ||keyCode == 188 || keyCode == 190)
-		{
+		if ((keyCode > 34 && keyCode < 58) || (keyCode > 95 && keyCode < 106) || keyCode == 8 || keyCode == 12 || keyCode == 13 || keyCode == 110 || keyCode == 188 || keyCode == 190) {
 			setTimeout(nameFunction,0);
 			return true;
 		}
-		else
-		{
-			return false;
-		}
+		return false;
 	});
 }
 
-function setTextInputAsIntegerFormat(textBox, nameFunction, integer){
+function setTextInputAsIntegerFormat(textBox, nameFunction, integer) {
 	textBox.keydown(function(event) {
 		var keyCode = event.keyCode;
 		
 		//solo dejamos pasar numeros y puntos
-		if((keyCode > 34 && keyCode < 58) ||
-		(keyCode > 95 && keyCode < 106)||
-		keyCode == 8 ||keyCode == 12 ||
-		keyCode == 9 ||keyCode == 13 ||
-		keyCode == 110 || keyCode == 190)
-		{
+		if((keyCode > 34 && keyCode < 58) || (keyCode > 95 && keyCode < 106) || keyCode == 8 || keyCode == 12 || keyCode == 9 ||keyCode == 13 || keyCode == 110 || keyCode == 190) {
 			return true;
 		}
 		return false;
@@ -62,21 +45,12 @@ function setTextInputAsIntegerFormat(textBox, nameFunction, integer){
 		var keyCode = event.keyCode;
 		
 		//solo dejamos pasar numeros y puntos
-		if((keyCode > 34 && keyCode < 58) ||
-		(keyCode > 95 && keyCode < 106)||
-		keyCode == 8 ||keyCode == 12 ||keyCode == 13 ||
-		keyCode == 110 ||keyCode == 188 || keyCode == 190)
-		{
+		if((keyCode > 34 && keyCode < 58) || (keyCode > 95 && keyCode < 106) || keyCode == 8 || keyCode == 12 || keyCode == 13 || keyCode == 110 ||keyCode == 188 || keyCode == 190) {
 			setTimeout(nameFunction,0);
-			
 			textBox.val(formatAsCurrency(textBox.val()));
-			
 			return true;
 		}
-		else
-		{
-			return false;
-		}
+		return false;
 	});
 }
 
@@ -158,20 +132,21 @@ function paintTable(lstQuota,lstNameColumns, divTable, lstDataType, includeTotal
 function formatNumber(value){
 	//si es un numero grande lo formateamos (separadores de miles)
 	//de lo contrario lo entregamos con con una precision de 3 decimales
-	if(value>1000)
+	if(value > 1000){
 		return formatAsCurrency((Math.round(value)));
-	else
+	} else {
 		return Math.round(value*1000)/1000;
+	}
 }
+
 //retorna el valor con los separados de miles
-function formatAsCurrency(value)
-{
-	var money = "";
-	
-	money += replaceAll(value,",","");
+function formatAsCurrency(value){
+	var money = '';
+	money += replaceAll(value,',','');
 	if(money.indexOf(".")<0)
-	for (var i = 0; i < Math.floor((money.length - (1 + i)) / 3); i++) 
+	for (var i = 0; i < Math.floor((money.length - (1 + i)) / 3); i++) {
 		money = money.substring(0, money.length - (4 * i + 3)) + "," + money.substring(money.length - (4 * i + 3));
+	}
 	
 	return money;
 }
@@ -180,8 +155,9 @@ function formatAsCurrency(value)
 function getParams(lstComponents){
 	for(var x=0 ; x<lstComponents.length; x++){
 		var cookieComponent = cookieClosure.readCookie(lstComponents[x]);
-		if(cookieComponent != null)
+		if(cookieComponent !== null) {
 			$("#"+lstComponents[x]).val(cookieComponent);
+		}
 	}
 }
 
@@ -189,7 +165,7 @@ function getParams(lstComponents){
 function setParams(lstComponents){
 	for(var x=0 ; x<lstComponents.length; x++){
 		var cookieComponent = cookieClosure.readCookie(lstComponents[x]);
-		if(cookieComponent != null){
+		if(cookieComponent !== null){
 			cookieClosure.createCookie(lstComponents[x],$("#"+lstComponents[x]).val() ,2592000);
 		}
 	}
@@ -207,8 +183,9 @@ function cleanComponents(lstComponents){
 //Reemplaza 'palabra' por 'palabraNueva' data la cadena de texto 'text'
 function replaceAll(text, palabra, palabraNueva ){
   var textReplace = text.toString();
-  while (textReplace.indexOf(palabra) != -1)
+  while (textReplace.indexOf(palabra) != -1){
     textReplace = textReplace.replace(palabra,palabraNueva);
+  }
   return textReplace;
 }
 
@@ -217,14 +194,13 @@ function isNumberKey(evt) {
   if (charCode > 31 && (charCode < 48 || charCode > 57)){
     return false;
   }
-
   return true;
 }
 
 function maskText(str, textbox, mod, delim) {
   str = replaceAll(str, '.', '');
 	str = replaceAll(str, ',', '');
-	var arr = str.split("");
+	var arr = str.split('');
   var itemMask = '';
   var contAct = 0;
   for (var i = arr.length - 1; i >= 0; i--) {

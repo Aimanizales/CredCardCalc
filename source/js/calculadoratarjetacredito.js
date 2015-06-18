@@ -116,15 +116,8 @@ function clean() {
   $limitTasa.hide();
 }
 
-//llenamos el select
 fillSelectMonth($cuotaSelect, 1, MAX_QUOTAS, 1);
-
-//damos el formato a los text input
 setTextInputAsIntegerFormat($purchaseInput, 'calcule()');
 setTextInputAsDecimalFormat($interestRate, 'calcule()');
-
-//obtenemos los parametros almacenados
 getParams([purchaseInput, interestRate, cuotaSelect]);
-
-//calculamos el valor
 calcule();
