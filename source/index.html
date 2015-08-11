@@ -16,19 +16,19 @@
 
 	<section class="inputFields">
 		<label for="purchaseInput">VALOR COMPRA:</label>
-		<input class="purchaseInput" id="purchaseInput" type="text" name="" maxlength="11" title="Indique aqu&iacute; el valor en pesos de su compra" onchange="calcule()" value="0">
+		<input class="purchaseInput" id="purchaseInput" type="text" name="" maxlength="11" title="Indique aqu&iacute; el valor en pesos de su compra" onchange="creditCard.calcule()" value="0">
 		<br>
 
 		<label for="cuotaSelect">N&uacute;mero de cuotas: </label>
-		<select class="cuotaSelect" id="cuotaSelect" name="cuotaSelect" onchange="calcule()"></select>
+		<select class="cuotaSelect" id="cuotaSelect" name="cuotaSelect" onchange="creditCard.calcule()"></select>
 		<br>
 
 		<label for="interestRate">Tasa de inter&eacute;s Mensual: </label>
 		<input class="interestRate" id="interestRate" type="text" value="2" name="interestRate" maxlength="4" title="Digite la tasa de inter&eacute;s mensual que le cobra su entidad."> (0% > 2,19%) <br>
 		<div class="limit_tasa">La cifra excede el valor de las tasas del mercado. Una cifra mayor a 2,19% está por encima de la tasa de usura.</div>
 		
-		<a class="button" href="javascript:calcule()">CALCULAR</a>
-		<a class="button" href="javascript:clean()">LIMPIAR</a>
+		<a class="button" href="javascript:creditCard.calcule()">CALCULAR</a>
+		<a class="button" href="javascript:creditCard.clean()">LIMPIAR</a>
 	</section>
 
 	<section class="outputResult">
