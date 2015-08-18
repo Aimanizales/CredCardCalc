@@ -317,7 +317,7 @@ var creditCard = (function () {
       
       if((keyCode >= 48 && keyCode <= 57) || (keyCode >= 96 && keyCode <= 105) || keyCode === 8) {
         creditCard.calcule();
-        $purchaseInput.val(Utils.convertToCurrency($purchaseInput.val()));
+        $purchaseInput.val(Utils.convertToCurrency('$', $purchaseInput.val()));
         return true;
       }
       return false;
