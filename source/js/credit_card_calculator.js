@@ -1,7 +1,53 @@
-var creditCard = {};
+/**
+ * creditCardCalculator
+ * @param  {closure}
+ * @return {object}   [inner functions]
+ */
+var creditCardCalculator = (function(){
+  'use strict';
+
+
+
+  /**
+   * fillSelectMonth
+   * @param  {$} select [num cuotas]
+   * @return {undefined}
+   */
+  function fillSelectMonth(select){
+    var valueOption = 1,
+      i = 1;
+
+    while(i <= 36){
+      valueOption = i * 1;
+      select.append('<option value="' + valueOption  + '">' + valueOption  + ((valueOption > 1) ? ' Meses' : ' Mes') + '</option>');
+      i++;
+    }
+  }
+
+  /**
+   * Obtiene los valores almacenados de los componentes en cookies
+   * @param  {[type]} lstComponents [description]
+   * @return {[type]}               [description]
+   */
+  function getCookieValues(lstComponents){
+    var cookieComponent;
+
+    for(var i = 0; i < lstComponents.length; i++){
+      cookieComponent = cookieClosure.readCookie(lstComponents[i]);
+      if(cookieComponent !== null) {
+        $("#"+lstComponents[i]).val(cookieComponent);
+      }
+    }
+  }
+
+  return {
+    fillSelectMonth: fillSelectMonth,
+    getCookieValues: getCookieValues
+  };
+
+})();
 
 var ok,
-    MAX_QUOTAS = 36,
     MAX_INTEREST_RATE = 2.19,
     purchaseInput = 'purchaseInput',
     interestRate = 'interestRate',
@@ -116,16 +162,6 @@ function clean() {
   $limitTasa.hide();
 }
 
-function fillSelectMonth(select, initialValue, finalValue, multiplicationFactor){
-  var valueOption = 0;
-  for(var i = initialValue; i <= finalValue; i++){
-    valueOption = i * multiplicationFactor;
-    select.append('<option value="' + valueOption  + '">' + valueOption  + ((valueOption > 1)? ' Meses' : ' Mes') + '</option>');
-  }
-}
-
-
-
 
 function setTextInputAsDecimalFormat(idTextBox, nameFunction, integer){
   idTextBox.keydown(function(event){
@@ -179,63 +215,64 @@ function paintTable(lstQuota,lstNameColumns, divTable, includeTotals){
 }
 
 function paintTable(lstQuota,lstNameColumns, divTable, lstDataType, includeTotals){
-  var repeaterHtml = '<thead>';
+  var i = 0,
+    j = 0,
+    repeaterHtml = '';
+  
   window.totalIntereses = 0;
   window.totalCuotas = 0;
+
   //pintamos el head de la tabla
-  repeaterHtml += '<tr>';
-  for(var x=0; x < lstNameColumns.length; x++){
+  repeaterHtml += '<thead><tr>';
+  for(i = 0; i < lstNameColumns.length; i++){
     //si no es una columna oculta
-    if(lstDataType === null || lstDataType[x]!= "h"){
-      repeaterHtml += '<th>';
-      repeaterHtml += lstNameColumns[x];
-      repeaterHtml += '</th>';
+    if(lstDataType === null || lstDataType[i] !== "h"){
+      repeaterHtml += ('<th>' + lstNameColumns[i] + '</th>');
     }
   }
+
   repeaterHtml += '</tr></thead>';
   
   //pintamos los datos
-  for(x=0; x <= lstQuota.length; x++){
+  for(i = 0; i <= lstQuota.length; i++){
     repeaterHtml += '<tr>';
     
-    var y = 0;
-    for (var name in lstQuota[x]){
-      if (lstQuota[x].hasOwnProperty(name)){
+    for (var name in lstQuota[i]){
+      if (lstQuota[i].hasOwnProperty(name)){
         //si no es una columna oculta
-        if(lstDataType === null || lstDataType[x]!="h"){
+        if(lstDataType === null || lstDataType[i]!="h"){
           //cada 12 meses ponemos una marca
           repeaterHtml += '<td>';
           
-          if(lstDataType != null){
-            if(lstDataType[y]=="%")
-              repeaterHtml += Math.round(lstQuota[x][name]*10000)/100 + lstDataType[y];
-            else if(lstDataType[y]=="s")
-              repeaterHtml += lstQuota[x][name];
+          if(lstDataType !== null){
+            if(lstDataType[j]=="%")
+              repeaterHtml += Math.round(lstQuota[i][name]*10000)/100 + lstDataType[j];
+            else if(lstDataType[j]=="s")
+              repeaterHtml += lstQuota[i][name];
             else
-              repeaterHtml += formatNumber(lstQuota[x][name]);
+              repeaterHtml += formatNumber(lstQuota[i][name]);
           }
           else{
-            repeaterHtml += formatNumber(lstQuota[x][name]);
+            repeaterHtml += formatNumber(lstQuota[i][name]);
             
             //Si la calculadora es de crédito, calculamos las sumatorias
             if(includeTotals == 1){
               if(name == 'interest')
-                totalIntereses += parseFloat(Math.round(lstQuota[x][name]));
+                totalIntereses += parseFloat(Math.round(lstQuota[i][name]));
               if(name == 'payment')
-                totalCuotas += parseFloat(Math.round(lstQuota[x][name]));
+                totalCuotas += parseFloat(Math.round(lstQuota[i][name]));
             }
           }
           repeaterHtml += '</td>';
         }
-        y += 1;
+        j += 1;
       }
     }
     repeaterHtml += '</tr>';
   }
   
   //Pintamos la fila de totales
-  if(includeTotals == 1)
-  {
+  if (includeTotals == 1) {
     repeaterHtml += '</tbody><tfoot><tr><td>TOTALES</td><td></td><td>';
     repeaterHtml += formatNumber(totalIntereses);
     repeaterHtml += '</td><td>';
@@ -269,16 +306,6 @@ function formatAsCurrency(value){
   }
   
   return money;
-}
-
-//obtiene los valores almacenados de los componentes en cookies
-function getParams(lstComponents){
-  for(var x=0 ; x<lstComponents.length; x++){
-    var cookieComponent = cookieClosure.readCookie(lstComponents[x]);
-    if(cookieComponent !== null) {
-      $("#"+lstComponents[x]).val(cookieComponent);
-    }
-  }
 }
 
 //alamcena los valores de los componentes en cookies
@@ -336,8 +363,9 @@ function maskText(str, textbox, mod, delim) {
   textbox.value = itemMask;
 }
 
-fillSelectMonth($cuotaSelect, 1, MAX_QUOTAS, 1);
+creditCardCalculator.fillSelectMonth($cuotaSelect);
+creditCardCalculator.getCookieValues([purchaseInput, interestRate, cuotaSelect]);
+
 setTextInputAsIntegerFormat($purchaseInput, 'calcule()');
 setTextInputAsDecimalFormat($interestRate, 'calcule()');
-getParams([purchaseInput, interestRate, cuotaSelect]);
 calcule();

@@ -1,4 +1,6 @@
 var cookieClosure = (function(){
+  'use strict';
+
   var c = 'test';
 
   function createCookie(name,value,seconds) {
