@@ -4,9 +4,7 @@
  * @return {Object}   [description]
  */
 var creditCard = (function () {
-
   var ok,
-  MAX_QUOTAS = 36,
   MAX_INTEREST_RATE = 2.19,
   purchaseInput = 'purchaseInput',
   interestRate = 'interestRate',
@@ -19,7 +17,13 @@ var creditCard = (function () {
   $tableResult = $(".table_result"),
   $notaCuotas = $(".nota_cuotas");
 
-
+  /**
+   * Esta función se ejecuta en 3 momentos:
+   * 1. Al iniciar la aplicación.
+   * 2. Al escribir el valor en el campo $$$.
+   * 3. Al cliquear "Calcular".
+   * @return {[type]} [description]
+   */
   function calcule(){
     var purchaseValue = $purchaseInput.val(),
       interestSelected = $interestRate.val(),
@@ -38,7 +42,7 @@ var creditCard = (function () {
     }
 
     if (purchaseValue !== '' && interestSelected !== '' && ok) {
-      purchaseValue = replaceAll(purchaseValue, ',', '');
+      purchaseValue = Utils.replaceText(purchaseValue, ',', '');
       var lstQuota = pagoTarjetaCredito(purchaseValue, numQuotasSelected, interestSelected, 0);
 
       if (lstQuota !== null) {
@@ -46,13 +50,13 @@ var creditCard = (function () {
         //pintamos los resultados
         paintTable(lstQuota, ['Cuota', 'Capital', 'Intereses', 'Pago Total', 'Saldo'], $tableResult, null, 1);
 
-        $quotaValueText.html(formatAsCurrency(Math.round(_R)));
+        $quotaValueText.html(Utils.convertToCurrency(Math.round(_R)));
 
         //almacenamos los valores ingresados por el usuario
         setParams([purchaseInput, interestRate, cuotaSelect]);
 
         $notaCuotas.find('.valor_compra').html(purchaseValue);
-        $notaCuotas.find('.pago_total').html(formatAsCurrency(totalCuotas));
+        $notaCuotas.find('.pago_total').html(Utils.convertToCurrency(totalCuotas));
         $notaCuotas.css('display', '');
       }
     }
@@ -122,17 +126,6 @@ var creditCard = (function () {
     $limitTasa.hide();
   }
 
-  function fillSelectMonth(select, initialValue, finalValue, multiplicationFactor){
-    var valueOption = 0;
-    for(var i = initialValue; i <= finalValue; i++){
-      valueOption = i * multiplicationFactor;
-      select.append('<option value="' + valueOption  + '">' + valueOption  + ((valueOption > 1)? ' Meses' : ' Mes') + '</option>');
-    }
-  }
-
-
-
-
   function setTextInputAsDecimalFormat(idTextBox, nameFunction, integer){
     idTextBox.keydown(function(event){
       var keyCode = event.keyCode;
@@ -156,33 +149,7 @@ var creditCard = (function () {
     });
   }
 
-  function setTextInputAsIntegerFormat(textBox, nameFunction, integer) {
-    textBox.keydown(function(event) {
-      var keyCode = event.keyCode;
-      
-      //solo dejamos pasar numeros y puntos
-      if((keyCode > 34 && keyCode < 58) || (keyCode > 95 && keyCode < 106) || keyCode == 8 || keyCode == 12 || keyCode == 9 ||keyCode == 13 || keyCode == 110 || keyCode == 190) {
-        return true;
-      }
-      return false;
-    });
-
-    textBox.keyup(function(event){
-      var keyCode = event.keyCode;
-      
-      //solo dejamos pasar numeros y puntos
-      if((keyCode > 34 && keyCode < 58) || (keyCode > 95 && keyCode < 106) || keyCode == 8 || keyCode == 12 || keyCode == 13 || keyCode == 110 ||keyCode == 188 || keyCode == 190) {
-        setTimeout(nameFunction,0);
-        textBox.val(formatAsCurrency(textBox.val()));
-        return true;
-      }
-      return false;
-    });
-  }
-
-  function paintTable(lstQuota,lstNameColumns, divTable, includeTotals){
-    paintTable(lstQuota,lstNameColumns, divTable, null , includeTotals);
-  }
+  
 
   function paintTable(lstQuota, lstNameColumns, divTable, lstDataType, includeTotals){
     var repeaterHtml = '<thead>';
@@ -259,23 +226,13 @@ var creditCard = (function () {
     //si es un numero grande lo formateamos (separadores de miles)
     //de lo contrario lo entregamos con con una precision de 3 decimales
     if(value > 1000){
-      return formatAsCurrency((Math.round(value)));
+      return Utils.convertToCurrency((Math.round(value)));
     } else {
       return Math.round(value*1000)/1000;
     }
   }
 
-  //retorna el valor con los separados de miles
-  function formatAsCurrency(value){
-    var money = '';
-    money += replaceAll(value,',','');
-    if(money.indexOf(".")<0)
-    for (var i = 0; i < Math.floor((money.length - (1 + i)) / 3); i++) {
-      money = money.substring(0, money.length - (4 * i + 3)) + "," + money.substring(money.length - (4 * i + 3));
-    }
-    
-    return money;
-  }
+  
 
   //obtiene los valores almacenados de los componentes en cookies
   function getParams(lstComponents){
@@ -306,15 +263,6 @@ var creditCard = (function () {
   }
 
 
-  //Reemplaza 'palabra' por 'palabraNueva' data la cadena de texto 'text'
-  function replaceAll(text, palabra, palabraNueva ){
-    var textReplace = text.toString();
-    while (textReplace.indexOf(palabra) != -1){
-      textReplace = textReplace.replace(palabra,palabraNueva);
-    }
-    return textReplace;
-  }
-
   function isNumberKey(evt) {
     var charCode = (evt.which) ? evt.which : event.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)){
@@ -324,8 +272,8 @@ var creditCard = (function () {
   }
 
   function maskText(str, textbox, mod, delim) {
-    str = replaceAll(str, '.', '');
-    str = replaceAll(str, ',', '');
+    str = Utils.replaceText(str, '.', '');
+    str = Utils.replaceText(str, ',', '');
     var arr = str.split('');
     var itemMask = '';
     var contAct = 0;
@@ -342,11 +290,49 @@ var creditCard = (function () {
     textbox.value = itemMask;
   }
 
-  fillSelectMonth($cuotaSelect, 1, MAX_QUOTAS, 1);
-  setTextInputAsIntegerFormat($purchaseInput, 'calcule()');
-  setTextInputAsDecimalFormat($interestRate, 'calcule()');
-  getParams([purchaseInput, interestRate, cuotaSelect]);
-  calcule();
+  /**
+   * Llena el 
+   * @return {[type]} [description]
+   */
+  function fillQuotaSelect(){
+    var valueOption = 0,
+      i = 1;
+
+    for(i; i <= 36; i++){
+      $cuotaSelect.append('<option value="' + i  + '">' + i  + ((i > 1) ? ' Meses' : ' Mes') + '</option>');
+    }
+  }
+
+
+  /**
+   * set keyCode event for $purchaseInput
+   * BEWARE. event.keyCode must be replaced because is deprecated
+   * 
+   */
+  function setTextInputAsIntegerFormat(textBox, nameFunction, integer) {
+    var keyCode;
+
+    $purchaseInput.keyup(function(event){
+      keyCode = event.keyCode;
+      
+      if((keyCode >= 48 && keyCode <= 57) || (keyCode >= 96 && keyCode <= 105) || keyCode === 8) {
+        creditCard.calcule();
+        $purchaseInput.val(Utils.convertToCurrency($purchaseInput.val()));
+        return true;
+      }
+      return false;
+    });
+  }
+
+  function init(){
+    fillQuotaSelect();
+    setTextInputAsIntegerFormat();
+    setTextInputAsDecimalFormat($interestRate, 'creditCard.calcule');
+    getParams([purchaseInput, interestRate, cuotaSelect]);
+    calcule();
+  }
+
+  init();
 
   return {
     calcule: calcule,

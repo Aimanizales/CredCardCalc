@@ -22,7 +22,7 @@ var pkg = require('./package.json'),
 /**
  * Default task ---------------------------------------
  */
-gulp.task('default', ['assets', 'watch:assets', 'css', 'watch:css', 'watch:index', 'index', 'watch:js', 'js']);
+gulp.task('default', ['assets', 'watch:assets', 'css', 'watch:css', 'watch:index', 'index', 'watch:js', 'js', 'server']);
 
 /**
  * Index
@@ -77,4 +77,12 @@ gulp.task('css', function () {
 
 gulp.task('watch:css', function () {
   gulp.watch(dir.source + 'less/**/*.less', ['css']);
+});
+
+
+/**
+ * SERVER
+ */
+gulp.task('server', function () {
+  //gulp.watch(dir.source + 'less/**/*.less', ['css']);
 });
