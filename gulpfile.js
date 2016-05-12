@@ -1,13 +1,3 @@
-'use strict';
-
-/**
- * Credit Card Calculator
- *
- * @author Aiman Abdel <aimanizales@gmail.com>
- * @package CredCardCalc
- * @module gulpfile
- */
-
 // Module dependencies
 var gulp = require('gulp'),
     // del = require('del'),

@@ -1,15 +1,19 @@
 {
-  "name": "Cred-Card-Calc",
-  "version": "0.0.0",
+  "name": "Credit-Card-Calculator",
+  "version": "0.0.1",
   "description": "",
   "scripts": {
-    "test": ""
+    "start": "gulp clean && gulp",
+    "build:local": "gulp clean && gulp base && gulp bundle:img",
+    "build:prod": "gulp clean && gulp base && gulp bundle",
+    "help": "gulp reference"
   },
   "keywords": [
-    "economy",
-    "credit card"
+    "economics",
+    "credit",
+    "calculations"
   ],
-  "author": "Aiman Abdel",
+  "author": "Aiman Abdel-Samad",
   "license": "copyright",
   "folders": {
     "source": "./source/",
