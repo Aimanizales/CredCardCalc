@@ -263,7 +263,7 @@ gulp.task('default:server', function () {
         }
     });
 });
-``
+```
 
 
 ## References

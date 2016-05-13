@@ -1,0 +1,33 @@
+{
+    "src": {
+        "scripts": "js/app.js",
+        "styles": ["css/vendor.css", "css/app.css"]
+    },
+    "rsvp": {
+        "venues": [{
+            "name": "Carrows Restaurant",
+            "streetAddress": "425 N Mountain Ave",
+            "addressLocality": "Upland",
+            "addressRegion": "CA",
+            "postalCode": "91786​",
+            "date": "20160408 18:00"
+        }, {
+            "name": "Mimi's Caf&eacute;",
+            "streetAddress": "3890 Grand Ave",
+            "addressLocality": "Chino",
+            "addressRegion": "CA",
+            "postalCode": "91710",
+            "date": "20160411 18:00"
+        }]
+    },
+    "mainPhone": "714-972-3333 (TTY: 711)",
+    "footer": {
+        "nav": [
+            { "name": "Company information", "url": "http://www.aetna.com/about/index.html" },
+            { "name": "Web Privacy statement", "url": "http://www.aetna.com/about/privacy.html" },
+            { "name": "Legal statement", "url": "http://www.aetna.com/about/disclmr.html" },
+            { "name": "Privacy notices", "url": "http://www.aetna.com/about/information_practices.html" },
+            { "name": "Member disclosure", "url": "http://www.aetna.com/products/member_disclosure.html" }
+        ]
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "paths": {
+        "root": {
+            "bundle": "/RSVPSB",
+            "staging": "http://70.183.17.183/"
+        },
+        "js": {
+            "app": "app/scripts/**/*.js"
+        },
+        "css": {
+            "app": "app/styles/styles.less",
+            "vendor": [
+                "node_modules/purecss/build/base-min.css",
+                "node_modules/purecss/build/pure-min.css",
+                "node_modules/purecss/build/grids-responsive-min.css"
+            ]
+        },
+        "hbs": {
+            "templates": ["app/templates/**/*.hbs", "!app/templates/partials/**"],
+            "partials": "app/templates/partials"
+        },
+        "assets": ["app/assets/**"]
+    },
+    "messages" : {
+        "intro" : "Run 'npm run help' to list available tasks"
+    }
+}

@@ -1,0 +1,15 @@
+<div itemscope itemtype="http://schema.org/Event" class="event-venue">
+    <dl itemprop="location" itemscope itemtype="http://schema.org/Place">
+        <dt itemprop="name" class="event-venue__name">{{{name}}}</dt>
+        <dd>
+            <ul class="flat-list event-venue__data" itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+                <li itemprop="streetAddress">{{{streetAddress}}}</li>
+                <li itemprop="addressLocality" class="comma-after">{{{addressLocality}}}</li>
+                <li itemprop="addressRegion">{{{addressRegion}}}</li>
+                <li itemprop="postalCode">{{{postalCode}}}</li>
+            </ul>
+        </dd>
+    </dl>
+    <span class="event-date" itemprop="startDate" content="{{date}}">{{getReadableDate date}}</span>
+    <a class="event-venue__map" data-action="modal" href="{{getMapURL streetAddress addressLocality addressRegion postalCode}}">Need Directions?</a>
+</div>
