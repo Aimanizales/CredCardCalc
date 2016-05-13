@@ -1,5 +1,10 @@
 # CredCardCalc
 
+## Pending tasks: 
+1. Update package.json.
+2. Update gulpfile.js.
+3. test scripts, tasks and check how public folder behavies for each case.
+
 ```json
 {
   "name": "PrimacareAetna",
@@ -258,7 +263,7 @@ gulp.task('default:server', function () {
         }
     });
 });
-```
+``
 
 
 ## References
