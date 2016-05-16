@@ -1,78 +1,47 @@
 // Module dependencies
-var gulp = require('gulp'),
-    // del = require('del'),
-    $ = require('gulp-load-plugins')({
-          pattern: ['gulp-*', 'gulp.*'],
-          scope: ['devDependencies']
-        });
+//   "scripts": {
+//   "start": "gulp clean && gulp",
+//   "build:local": "gulp clean && gulp base && gulp bundle:img",
+//   "build:prod": "gulp clean && gulp base && gulp bundle",
+//   "help": "gulp reference"
+// 
+var gulp = require('gulp');
 
-var pkg = require('./package.json'),
-    dir = pkg.folders;
 
-/**
- * Default task ---------------------------------------
- */
-gulp.task('default', ['assets', 'watch:assets', 'css', 'watch:css', 'watch:index', 'index', 'watch:js', 'js', 'server']);
+// default & base:
+gulp.task('base',     ['base:assets', 'base:styles',    'base:scripts', 'base:templates']);
+gulp.task('default',  ['base',        'default:server', 'default:watch']);
 
-/**
- * Index
- */
-gulp.task('watch:index', function () {
-  gulp.watch(dir.source + 'index.html', ['index']);
+// base tasks:
+gulp.task('base:assets', function () {
+    gulp.src(PATHS.assets)
+        .pipe(gulp.dest('public'));
+});
+gulp.task('base:styles', ['styles:css', 'styles:less']);
+
+
+// styles:
+gulp.task('styles:less', function () {
+    gulp.src(PATHS.css.app)
+        .pipe(less())
+        .pipe(concat('app.css'))
+        .pipe(gulp.dest('./public/css'))
+        .pipe(sync.reload({stream: true}
+    ));
 });
 
-gulp.task('index', function () {
-  gulp.src(dir.source + 'index.html')
-      .pipe(gulp.dest(dir.build));
-});
-
-/**
- * JS
- */
-gulp.task('watch:js', function () {
-  gulp.watch(dir.source + 'js/**/*', ['js']);
-});
-
-gulp.task('js', function () {
-  gulp.src(dir.source + 'js/**/*')
-    .pipe(gulp.dest(dir.build + 'js/'));
-});
-
-
-/**
- * Assets
- */
-gulp.task('watch:assets', function () {
-  gulp.watch(dir.source + 'img/**/*', ['assets']);
-});
-
-gulp.task('assets', function () {
-  gulp.src(dir.source + 'fonts/**/*')
-    .pipe(gulp.dest(dir.build + 'fonts/'));
-  gulp.src(dir.source + 'img/**/*')
-    .pipe(gulp.dest(dir.build + 'img/'));
-});
-
-/**
- * Css tasks ------------------------------------------
- */
-gulp.task('css', function () {
-  gulp.src(dir.source + 'less/main.less')
-      .pipe($.less())
-      .pipe(gulp.dest(dir.build + 'css'));
-      // .pipe($.cssmin())
-      // .pipe($.rename({ suffix: '.min' }))
-      //.pipe(gulp.dest(dir.build + 'css'));
-});
-
-gulp.task('watch:css', function () {
-  gulp.watch(dir.source + 'less/**/*.less', ['css']);
+gulp.task('styles:css', function () {
+    gulp.src(PATHS.css.vendor)
+        .pipe(concat('vendor.css'))
+        .pipe(gulp.dest('./public/css'));
 });
 
 
-/**
- * SERVER
- */
-gulp.task('server', function () {
-  //gulp.watch(dir.source + 'less/**/*.less', ['css']);
+// clean build files
+gulp.task('clean', function () {
+    return del([
+        'public'
+    ]);
 });
+
+
