@@ -5,12 +5,17 @@
 //   "build:prod": "gulp clean && gulp base && gulp bundle",
 //   "help": "gulp reference"
 // 
-var gulp = require('gulp');
+var PATHS = require('./utils/config').paths,
+    gulp = require('gulp'),
+    less = require('gulp-less'),
+    sync = require('browser-sync').create(),
+    watchify = require('watchify');
 
 
 // default & base:
 gulp.task('base',     ['base:assets', 'base:styles',    'base:scripts', 'base:templates']);
-gulp.task('default',  ['base',        'default:server', 'default:watch']);
+// gulp.task('default',  ['base',        'default:server', 'default:watch']);
+gulp.task('default',  ['default:server', 'default:watch']);
 
 // base tasks:
 gulp.task('base:assets', function () {
@@ -44,4 +49,21 @@ gulp.task('clean', function () {
     ]);
 });
 
+// - server
+gulp.task('default:server', function () {
+    sync.init({
+        server: {
+            baseDir: "./public/"
+        }
+    });
+});
 
+//  - watch for me, while I'm gone...
+gulp.task('default:watch', function () {
+    watchify(bundler)
+        .on('update', onCodeUpdate);
+    gulp.watch(PATHS.hbs.templates, ['base:templates']);
+    gulp.watch(PATHS.hbs.partials + '/**', ['base:templates']);
+    gulp.watch('app/styles/**/*.less', ['styles:less']);
+    gulp.watch([PATHS.assets, '!app/assets/data/**'], ['base:assets']);
+});
