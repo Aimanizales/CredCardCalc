@@ -1,30 +1,12 @@
 # CredCardCalc
 
 ## Pending tasks: 
-1. Update package.json.
+1. --Update package.json.--
 2. Update gulpfile.js.
 3. Run scripts, check each task and see how public folder changes for each case.
 4. Modify the less file.
 
-```json
-{
-  "keywords": [
-    "3096",
-    "aetna",
-    "primacare"
-  ],
-  "license": "ISC"
-}
-```
-
 ```javascript
-//  consts
-var PATHS = require('./utils/config').paths,
-    TEMPLATE_CONTEXT_DATA = require('./app/templates/utils/values'),
-    TEMPLATE_HELPERS = require('./app/templates/utils/helpers'),
-    ROOT_REPLACEMENT_EXP = /((?:src|url|href)\s*[=(:]\s*["']?\s*)(\/[^"'\/])/gi;
-
-
 //  vars
 var gulp = require('gulp'),
     del = require('del'),
@@ -84,21 +66,11 @@ function getRootDir() {
     return PATHS.root[gutil.env.target] || PATHS.root.bundle;
 }
 
-
-//  TASKS -----
 // base  help task
 gulp.task('reference', taskListing);
 
-// clean build files
-gulp.task('clean', function () {
-    return del([
-        'public'
-    ]);
-})
-
 //  - scripts
 gulp.task('scripts:browserify', browserifyBundle);
-
 
 // task to concatenate vendor minified scripts
 gulp.task('scripts:js', function () {
@@ -108,46 +80,6 @@ gulp.task('scripts:js', function () {
 });
 
 gulp.task('base:scripts', ['scripts:browserify']);
-
-
-// - templates
-gulp.task('base:templates', function () {
-    var options = {
-        batch: [PATHS.hbs.partials],
-        helpers: TEMPLATE_HELPERS
-    }
-
-    gulp.src(PATHS.hbs.templates)
-        .pipe(handlebars(TEMPLATE_CONTEXT_DATA, options))
-        .pipe(rename(function (path) {
-            path.extname = '.html';
-        }))
-        .pipe(gulp.dest('./public'))
-        .pipe(sync.reload({
-            stream: true
-        }));
-});
-
-
-//  - styles
-gulp.task('styles:less', function () {
-    gulp.src(PATHS.css.app)
-        .pipe(less())
-        .pipe(concat('app.css'))
-        .pipe(gulp.dest('./public/css'))
-        .pipe(sync.reload({
-            stream: true
-        }));
-});
-
-gulp.task('styles:css', function () {
-    gulp.src(PATHS.css.vendor)
-        .pipe(concat('vendor.css'))
-        .pipe(gulp.dest('./public/css'));
-});
-
-gulp.task('base:styles', ['styles:css', 'styles:less']);
-
 
 // image optimization
 gulp.task('bundle:img', function () {
@@ -161,7 +93,6 @@ gulp.task('bundle:img', function () {
         }))
         .pipe(gulp.dest('./public/img'));
 });
-
 
 //  - bundle ops
 gulp.task('bundle:uglifyJS', function () {
@@ -181,46 +112,10 @@ gulp.task('bundle:minifyCSS', function () {
         .pipe(gulp.dest('./public/css'));
 });
 
-
-//  - assets
-gulp.task('base:assets', function () {
-    //del('public');
-    gulp.src(PATHS.assets)
-        .pipe(gulp.dest('public'));
-});
-
-
-// basic tasks
-gulp.task('base', ['base:assets', 'base:styles', 'base:scripts', 'base:templates']);
-
-
-//  - default and bundled version
-gulp.task('default', ['base', 'default:server', 'default:watch']);
-
 gulp.task('bundle', ['bundle:minifyCSS', 'bundle:uglifyJS', 'bundle:img'], function () {
     gutil.log('Bundle root directory is now ' + gutil.colors.magenta.bold(getRootDir()));
 });
 
-
-//  - watch for me, while I'm gone...
-gulp.task('default:watch', function () {
-    watchify(bundler)
-        .on('update', onCodeUpdate);
-    gulp.watch(PATHS.hbs.templates, ['base:templates']);
-    gulp.watch(PATHS.hbs.partials + '/**', ['base:templates']);
-    gulp.watch('app/styles/**/*.less', ['styles:less']);
-    gulp.watch([PATHS.assets, '!app/assets/data/**'], ['base:assets']);
-});
-
-
-// - server
-gulp.task('default:server', function () {
-    sync.init({
-        server: {
-            baseDir: "./public/"
-        }
-    });
-});
 ```
 
 
