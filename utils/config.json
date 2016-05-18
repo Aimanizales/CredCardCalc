@@ -8,7 +8,7 @@
             "app": "app/scripts/**/*.js"
         },
         "css": {
-            "app": "app/styles/styles.less",
+            "app": "app/styles/app.scss",
             "vendor": [
                 "node_modules/purecss/build/base-min.css",
                 "node_modules/purecss/build/pure-min.css",

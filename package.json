@@ -2,7 +2,7 @@
   "author": "Aiman Abdel-Samad",
   "name": "Credit-Card-Calculator",
   "version": "0.0.2",
-  "license": "copyright",
+  "license": "MIT",
   "description": "Adaptation of credit calculator js -taken from finanzaspersonales.com- adapted and enhanced according with the best practices for JS coding.",
   "scripts": {
     "start": "gulp clean && gulp",
@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "jquery": "^2.2.3",
-    "normalizecss": "^3.0.0"
+    "purecss": "^0.6.0"
   },
   "devDependencies": {
     "browser-sync": "latest",
@@ -33,11 +33,15 @@
     "del": "^1.1.1",
     "gulp": "^3.8.11",
     "gulp-cdnizer": "^1.1.5",
+    "gulp-compile-handlebars": "^0.6.1",
+    "gulp-concat": "^2.6.0",
     "gulp-cssmin": "^0.1.7",
-    "gulp-less": "^3.0.3",
     "gulp-load-plugins": "^0.10.0",
     "gulp-minify-css": "^1.2.4",
     "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.3.1",
+    "handlebars": "^4.0.5",
+    "moment": "^2.13.0",
     "watchify": "latest"
   }
 }

@@ -1,0 +1,56 @@
+// FORM
+.inputFields{
+  background: #666;
+  padding: 15px 25px;
+
+  label{
+    display: inline-block;
+    width: 222px;
+    margin-bottom: 10px;
+  }
+
+  .purchaseInput{
+    font-size: 1.5em;
+    font-family: 'Source Code Pro', sans-serif;
+  }
+
+  .cuotaSelect{
+    font-size: 1.2em;
+    font-family: 'Source Code Pro', sans-serif;
+    border: none;
+    color: #555;
+  }
+
+  .interestRate{
+    font-size: 1.2em;
+    font-family: 'Source Code Pro', sans-serif;
+    border: none;
+    color: #555;
+    width: 50px;
+  }
+
+  .limit_tasa{
+    color: #57261B;
+    background: #CDBDBD;
+    display: none;
+    font-size: 0.8em;
+    padding: 8px 20px;
+    width: 340px;
+    position: absolute;
+    left: 430px;
+    top: 178px;
+  }
+
+  .button{
+    display: inline-block;
+    background: #234;
+    padding: 9px 17px;
+    text-decoration: none;
+    color: #ccc;
+    transition: all 200ms ease-out;
+
+    &:hover{
+      background: #567;
+    }
+  }
+}

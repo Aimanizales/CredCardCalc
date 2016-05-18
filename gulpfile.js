@@ -6,40 +6,71 @@
 //   "help": "gulp reference"
 // 
 var PATHS = require('./utils/config').paths,
+    TEMPLATE_CONTEXT_DATA = require('./app/templates/utils/values'),
+    TEMPLATE_HELPERS = require('./app/templates/utils/helpers'),
+    ROOT_REPLACEMENT_EXP = /((?:src|url|href)\s*[=(:]\s*["']?\s*)(\/[^"'\/])/gi,
+    concat = require('gulp-concat'),
+    del = require('del'),
     gulp = require('gulp'),
-    less = require('gulp-less'),
+    gutil = require('gulp-util'),
+    handlebars = require('gulp-compile-handlebars'),
+    rename = require('gulp-rename'),
+    sass = require('gulp-sass'),
     sync = require('browser-sync').create(),
     watchify = require('watchify');
 
+/**
+ * Resume of tasks:
+ * clean: delete public folder
+ * styles:sass
+ * styles:css
+ */
 
 // default & base:
-gulp.task('base',     ['base:assets', 'base:styles',    'base:scripts', 'base:templates']);
+gulp.task('base',     ['base:assets', 'base:styles', 'base:scripts', 'base:templates']);
 // gulp.task('default',  ['base',        'default:server', 'default:watch']);
 gulp.task('default',  ['default:server', 'default:watch']);
+
+// gulp.task('bundle', ['bundle:minifyCSS', 'bundle:uglifyJS', 'bundle:img'], function () {
+//     gutil.log('Bundle root directory is now ' + gutil.colors.magenta.bold(getRootDir()));
+// });
 
 // base tasks:
 gulp.task('base:assets', function () {
     gulp.src(PATHS.assets)
         .pipe(gulp.dest('public'));
 });
-gulp.task('base:styles', ['styles:css', 'styles:less']);
 
+gulp.task('base:templates', function () {
+    var options = {
+        batch: [PATHS.hbs.partials],
+        helpers: TEMPLATE_HELPERS
+    };
 
-// styles:
-gulp.task('styles:less', function () {
-    gulp.src(PATHS.css.app)
-        .pipe(less())
-        .pipe(concat('app.css'))
-        .pipe(gulp.dest('./public/css'))
-        .pipe(sync.reload({stream: true}
-    ));
+    gulp.src(PATHS.hbs.templates)
+        .pipe(handlebars(TEMPLATE_CONTEXT_DATA, options))
+        .pipe(rename(function (path) {path.extname = '.html';}))
+        .pipe(gulp.dest('./public'));
+        //.pipe(sync.reload({stream: true}));
 });
 
-gulp.task('styles:css', function () {
+gulp.task('base:styles', ['styles:vendor', 'styles:sass']);
+
+// styles:
+gulp.task('styles:sass', function () {
+    gulp.src(PATHS.css.app)
+        .pipe(sass())
+        .pipe(gulp.dest('./public/css'));
+        //.pipe(sync.reload({stream: true}));
+});
+
+gulp.task('styles:vendor', function () {
     gulp.src(PATHS.css.vendor)
         .pipe(concat('vendor.css'))
         .pipe(gulp.dest('./public/css'));
 });
+
+
 
 
 // clean build files
@@ -60,10 +91,28 @@ gulp.task('default:server', function () {
 
 //  - watch for me, while I'm gone...
 gulp.task('default:watch', function () {
-    watchify(bundler)
-        .on('update', onCodeUpdate);
+    //watchify(bundler)
+    //    .on('update', onCodeUpdate);
     gulp.watch(PATHS.hbs.templates, ['base:templates']);
     gulp.watch(PATHS.hbs.partials + '/**', ['base:templates']);
     gulp.watch('app/styles/**/*.less', ['styles:less']);
     gulp.watch([PATHS.assets, '!app/assets/data/**'], ['base:assets']);
 });
+
+function onCodeUpdate() {
+    var updateStart = Date.now();
+
+    gutil.log('Updating', gutil.colors.cyan("'browserify'"), '...');
+    browserifyBundle();
+    gutil.log('Finished', gutil.colors.cyan("'browserify'"), 'after ' + gutil.colors.magenta((Date.now() - updateStart) + 'ms'));
+}
+
+//--------------------------BUNDLE--------------------------
+
+gulp.task('bundle:minifyCSS', function () {
+    gulp.src('./public/css/app.css')
+        .pipe(replace(ROOT_REPLACEMENT_EXP, '$1' + getRootDir() + '$2'))
+        .pipe(minifyCSS())
+        .pipe(gulp.dest('./public/css'));
+});
+
