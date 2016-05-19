@@ -1,4 +1,4 @@
-# Te quiero mi hermosota. beso: muak muak muak
+# Credit Card Payment Calculator
 Adaptation of js calculator from [finanzaspersonales.com](http://www.finanzaspersonales.com.co/calculadoras/articulo/tarjeta-credito/39934), adapted and enhanced, according with the best practices for JS coding.
 
 ## Pending tasks: 
