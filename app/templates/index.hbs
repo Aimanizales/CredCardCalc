@@ -1,116 +1,83 @@
 <!DOCTYPE html>
 <html lang="en" id="root" class="small-size">
-
 <head>
     <meta charset="UTF-8">
-    <title>Prime Care - aetna</title>
+    <title>Credit Card Payment Calculator</title>
     {{#each src.styles}}
         <link rel="stylesheet" type="text/css" href="{{this}}">
     {{/each}}
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    {{> tracking/googleAnalytics}}
 </head>
 
 <body id="viewport" class="main-view">
     <header class="header pure-g">
-        <div class="header__viewport">
-            <h1 class="header__title pure-u-1 pure-u-md-1-2">
-                <i class="icon prime-care">Prime Care -</i><i class="icon aetna">- aetna</i>
-            </h1>
-            <div class="font-size-widget pure-u-1-6 pure-u-lg-1-12">
-                <a href="#small-size" class="small-size font-size-widget--active" data-size="small-size" title="Use default font size">A</a>
-                <a href="#medium-size" class="medium-size" data-size="medium-size" title="Use bigger font size">A</a>
-                <a href="#big-size" class="big-size" data-size="big-size" title="Use biggest font size">A</a>
-            </div>
-            <strong class="header__cta pure-u-1-2 pure-u-lg-5-12">Call today: <span itemprop="telephone">{{mainPhone}}</span></strong>
-        </div>
+        <h1>Credit Card Payment Calculator</h1>
+        
+        {{!-- 
+        <div class="font-size-widget pure-u-1-6 pure-u-lg-1-12">
+            <a href="#small-size" class="small-size font-size-widget--active" data-size="small-size" title="Use default font size">A</a>
+            <a href="#medium-size" class="medium-size" data-size="medium-size" title="Use bigger font size">A</a>
+            <a href="#big-size" class="big-size" data-size="big-size" title="Use biggest font size">A</a>
+        </div> 
+        --}}
     </header>
-    <div class="hero block pure-g">
-        <div class="hero__viewport">
-            {{! hero content}}
-            <section class="intro pure-u-1 pure-u-lg-1-2 pure-u-md-2-3">
-                <h2 class="intro__title">New to Medicare?</h2>
-                <p class="intro__header">Get <strong>$0</strong> monthly plan premiums
-                with no annual deductible.</p>
-                <p>
-                    Learn more at a local Medicare information meeting.
-                </p>
-                <small>Light refreshments will be served.</small>
-            </section>
-            {{! venues list}}
-            {{#if rsvp.venues.length}}
-            <section class="venues pure-u-1 pure-u-lg-7-24 pure-u-md-1-3">
-                <h2 class="venues__title">RSVP to meet</h2>
-                <ul class="venues__list pure-g">
-                    {{#each rsvp.venues}}
-                        <li class="pure-u-1-2 pure-u-md-1">
-                            {{> event this}}
-                        </li>
-                    {{/each}}
-                    <li class="event-venue__name pure-u-1">
-                        Or, call for an in-home meeting or for other local meetings, dates and times.
-                    </li>
+
+    <section class="inputFields">
+        <label for="purchaseInput">VALOR COMPRA:</label>
+        <input class="purchaseInput" id="purchaseInput" type="text" name="" maxlength="11" title="Indique aqu&iacute; el valor en pesos de su compra" onchange="creditCard.calcule()" value="0">
+        <br>
+
+        <label for="cuotaSelect">N&uacute;mero de cuotas: </label>
+        <select class="cuotaSelect" id="cuotaSelect" name="cuotaSelect" onchange="creditCard.calcule()"></select>
+        <br>
+
+        <label for="interestRate">Tasa de inter&eacute;s Mensual: </label>
+        <input class="interestRate" id="interestRate" type="text" value="2" name="interestRate" maxlength="4" title="Digite la tasa de inter&eacute;s mensual que le cobra su entidad."> (0% > 2,19%) <br>
+        <div class="limit_tasa">La cifra excede el valor de las tasas del mercado. Una cifra mayor a 2,19% está por encima de la tasa de usura.</div>
+        
+        <a class="button" href="javascript:creditCard.calcule()">CALCULAR</a>
+        <a class="button" href="javascript:creditCard.clean()">LIMPIAR</a>
+    </section>
+
+    <section class="outputResult">
+        <p class="nota_cuotas">
+            Si el valor de su compra fue $<strong class="valor_compra">0</strong>, el pago total ser&aacute; aproximadamente de $<strong class="pago_total">0</strong>
+        </p>
+        <p class="nota_cuota_value">
+            Cuota mensual a pagar: $<span class="quotaValue">0</span>
+        </p>
+
+        Los c&aacute;lculos dados en esta calculadora son una aproximaci&oacute;n a la cuota que le cobrar&aacute; su banco por la utilizaci&oacute;n de la tarjeta de cr&eacute;dito. Sin embargo, la suma puede cambiar en comparaci&oacute;n con la que le cobra su entidad financiera porque:
+        <p>
+    NOTA: 
+                <ul>
+                    <li>Puede incluir el cobro de la cuota de manejo de la tarjeta de cr&eacute;dito.</li>
+                    <li>Las tasas de los bancos son variables mes a mes y el saldo se puede alterar por el alza o baja de la tasa.</li>
+                    <li>La entidad financiera puede incluir el valor del seguro.</li>
                 </ul>
-            </section>
-            {{/if}}
-        </div>
-    </div>
+                Recuerde que la tasa de inter&eacute;s que debe utilizar es mensual vencida. En caso de necesitarlo, utilice nuestra calculadora <a href="http://www.finanzaspersonales.com.co/calculadoras/articulo/conversion-tasas/39936" target="_blank">Conversi&oacute;n de Tasas de Inter&eacute;s</a> para obtener la tasa adecuada para hacer el c&aacute;lculo.
+            </p>
+        <table class="table_result">
+            
+        </table>
+    </section>
+
+    <input type="hidden" name="ctl35$Calculadora1$hfPrefijo" id="ctl35_Calculadora1_hfPrefijo" value="TarjetaCredito">
+    
+    {{!-- 
+    {{! hero content}}
+    {{! venues list}}
+    {{#if rsvp.venues.length}}
+    <ul class="venues__list pure-g">
+        {{#each rsvp.venues}}
+            <li class="pure-u-1-2 pure-u-md-1">
+                {{> event this}}
+            </li>
+        {{/each}}
+    </ul>
+    {{/if}}
+
     {{! microdata for contact }}
-    <article class="pure-g rsvp" itemscope itemtype="http://schema.org/LocalBusiness">
-        <h2 class="rsvp__title pure-u-7-24 pure-u-lg-1-2">
-            <span class="rsvp__title__content">RSVP</span>
-        </h2>
-        <div class="rsvp__data pure-u-17-24 pure-u-lg-1-2">
-            <ul class="rsvp__data__content">
-                <li class="rsvp__data__content__title" itemprop="telephone">
-                    {{mainPhone}}
-                </li>
-                <li itemprop="openingHours">Monday – Friday, 9 am - 4 pm</li>
-                <li>
-                    <p class="rsvp__data__content__additional">Calling the number above will direct
-                    you to a licensed insurance agent.</p>
-                </li>
-            </ul>
-        </div>
-    </article>
-    <main class="why">
-        <div class="why__viewport">
-            <h2 class="why__title">Why should you attend?</h2>
-            <p>
-                If you or a loved one is new to Medicare this year, you're sure
-                to have questions about how Medicare works and how to pick a plan
-                that best meets your needs.
-            </p>
-            <p>
-                PrimeCare is dedicated to quality health care for <strong>San Bernardino
-                County</strong>, California residents.  We are pleased to offer this one-hour
-                program to help you understand Medicare and answer your questions.
-            </p>
-            <p>
-                <em>Plus</em>, we'll introduce you to the unique benefits of our
-                <strong>Aetna Medicare Prime Plan (HMO)</strong>.
-            </p>
-            <p>
-                Here are just a few more key benefits you'll enjoy with the plan:
-                <ul class="why__benefits">
-                    <li><strong>$0 copay for primary care physician and specialist office visits</strong></li>
-                    <li><strong>Preventive dental allowance: $500 every year</strong></li>
-                    <li><strong>Expanded drug coverage</strong></li>
-                    <li><strong>Access to doctors and hospitals you know and trust,
-                    such as PrimeCare, Desert Valley Medical Group and St. Mary High
-                    Desert Medical Group</strong></li>
-                </ul>
-            </p>
-            <p>
-                So why wait?  Take a moment right now to RSVP for one of these
-                informative meetings. <strong class="cta">Call <span itemprop="telephone">{{mainPhone}}</span></strong> to register or to set up an
-                in-home meeting.
-            </p>
-            <p>
-                We look forward to seeing you there.
-            </p>
-        </div>
-    </main>
     <footer class="footer">
          <div class="footer__viewport">
             <nav class="footer__navigation block">
@@ -121,7 +88,7 @@
                     {{/each}}
                  </ul>
              </nav>
-             <p class="footer__legal">Aetna Medicare is a PDP, HMO, PPO plan with a Medicare contract. Our SNPs also have contracts with State Medicaid programs. Enrollment in our plans depends on contract renewal. See Evidence of Coverage for a complete description of benefits, exclusions, limitations and conditions of coverage. Plan features and availability may vary by location. This information is not a complete description of benefits. Contact the plan for more information. Limitations, copayments, and restrictions may apply. Benefits, formulary, provider network, premium and/or copayments/coinsurance may change on January 1 of each year. You must continue to pay your Medicare Part B premium. Members who get "extra help" are not required to fill prescriptions at preferred network pharmacies in order to get Low Income Subsidy (LIS) copays. Other physicians/providers are available in our network. Participating physicians, hospitals and other health care providers are independent contractors and are neither agents nor employees of Aetna. The availability of any particular provider cannot be guaranteed, and provider network composition is subject to change. The formulary and/or provider network may change at any time. You will receive notice when necessary. A sales person will be present with information and applications. For accommodation of persons with special needs at sales meetings, call <strong itemprop="telephone">{{mainPhone}}.</strong>
+             <p class="footer__legal">gfgh<strong itemprop="telephone">{{mainPhone}}.</strong>
              </p>
             <ul class="footer__copyright pure-g">
                 <li class="pure-u-1 pure-u-md-1-3">Y0001_4037_7363 Accepted 03/2016</li>
@@ -132,7 +99,7 @@
     </footer>
     {{> modal}}
     <script type="text/javascript" src="{{src.scripts}}"></script>
-    {{> tracking/brighttag}}
+    {{> tracking/brighttag}} --}}
+    Latest update: {{now }}
 </body>
-<!-- latest update: {{now }} -->
 </html>

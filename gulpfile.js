@@ -18,7 +18,7 @@ var PATHS = require('./utils/config').paths,
     rename = require('gulp-rename'),
     replace = require('gulp-replace'),
     sass = require('gulp-sass'),
-    sync = require('browser-sync').create(),
+    browserSync = require('browser-sync').create(),
     watchify = require('watchify');
 
 /**
@@ -28,21 +28,21 @@ var PATHS = require('./utils/config').paths,
  * styles:css
  */
 
-// default & base:
-gulp.task('base',     ['base:assets', 'base:styles', 'base:scripts', 'base:templates']);
-// gulp.task('default',  ['base',        'default:server', 'default:watch']);
-gulp.task('default',  ['default:server', 'default:watch']);
-
-gulp.task('bundle', ['bundle:minifyCSS', 'bundle:uglifyJS', 'bundle:img'], function () {
+//============================= main tasks =============================
+gulp.task('default', ['base', 'default:server', 'default:watch']);
+// gulp.task('base',    ['base:assets', 'base:styles', 'base:scripts', 'base:templates']);
+gulp.task('base',    ['base:assets', 'base:templates', 'base:styles']);
+gulp.task('bundle',  ['bundle:minifyCSS', 'bundle:uglifyJS', 'bundle:img'], function () {
     gutil.log('Bundle root directory is now ' + gutil.colors.magenta.bold(getRootDir()));
 });
 
-// base tasks:
+//============================= assets =============================
 gulp.task('base:assets', function () {
     gulp.src(PATHS.assets)
-        .pipe(gulp.dest('public'));
+        .pipe(gulp.dest('./public/assets'));
 });
 
+//============================= templates =============================
 gulp.task('base:templates', function () {
     var options = {
         batch: [PATHS.hbs.partials],
@@ -52,18 +52,19 @@ gulp.task('base:templates', function () {
     gulp.src(PATHS.hbs.templates)
         .pipe(handlebars(TEMPLATE_CONTEXT_DATA, options))
         .pipe(rename(function (path) {path.extname = '.html';}))
-        .pipe(gulp.dest('./public'));
-        //.pipe(sync.reload({stream: true}));
+        .pipe(gulp.dest('./public'))
+        .pipe(browserSync.reload({stream:true}));
 });
 
+
+//============================= styles =============================
 gulp.task('base:styles', ['styles:sass', 'styles:vendor']);
 
-// styles:
 gulp.task('styles:sass', function () {
     gulp.src(PATHS.css.app)
         .pipe(sass())
-        .pipe(gulp.dest('./public/css'));
-        //.pipe(sync.reload({stream: true}));
+        .pipe(gulp.dest('./public/css'))
+        .pipe(browserSync.reload({stream:true}));
 });
 
 gulp.task('styles:vendor', function () {
@@ -73,44 +74,33 @@ gulp.task('styles:vendor', function () {
 });
 
 
-
-
-// clean build files
+//============================= clean =============================
 gulp.task('clean', function () {
     return del([
         'public'
     ]);
 });
 
-// - server
+//============================= server =============================
 gulp.task('default:server', function () {
-    sync.init({
+    browserSync.init({
         server: {
             baseDir: "./public/"
         }
     });
 });
 
-//  - watch for me, while I'm gone...
+//============================= watch =============================
 gulp.task('default:watch', function () {
     //watchify(bundler)
     //    .on('update', onCodeUpdate);
-    gulp.watch(PATHS.hbs.templates, ['base:templates']);
-    gulp.watch(PATHS.hbs.partials + '/**', ['base:templates']);
-    gulp.watch('app/styles/**/*.less', ['styles:less']);
+    gulp.watch(PATHS.hbs.templates,         ['base:templates']);
+    gulp.watch(PATHS.hbs.partials + '/**',  ['base:templates']);
+    gulp.watch('app/styles/**/*.scss',      ['styles:sass']);
     gulp.watch([PATHS.assets, '!app/assets/data/**'], ['base:assets']);
 });
 
-function onCodeUpdate() {
-    var updateStart = Date.now();
-
-    gutil.log('Updating', gutil.colors.cyan("'browserify'"), '...');
-    browserifyBundle();
-    gutil.log('Finished', gutil.colors.cyan("'browserify'"), 'after ' + gutil.colors.magenta((Date.now() - updateStart) + 'ms'));
-}
-
-//--------------------------BUNDLE--------------------------
-
+//============================= bundle =============================
 gulp.task('bundle:minifyCSS', function () {
     gulp.src('./public/css/app.css')
         .pipe(replace(ROOT_REPLACEMENT_EXP, '$1' + getRootDir() + '$2'))
@@ -119,8 +109,15 @@ gulp.task('bundle:minifyCSS', function () {
 });
 
 
-//--------------------------FUNCTIONS--------------------------
+//============================= functions =============================
 function getRootDir() {
     return PATHS.root[gutil.env.target] || PATHS.root.bundle;
+}
+
+function onCodeUpdate() {
+    var updateStart = Date.now();
+    gutil.log('Updating', gutil.colors.cyan("'browserify'"), '...');
+    browserifyBundle();
+    gutil.log('Finished', gutil.colors.cyan("'browserify'"), 'after ' + gutil.colors.magenta((Date.now() - updateStart) + 'ms'));
 }
 

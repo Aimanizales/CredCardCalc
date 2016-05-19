@@ -1,12 +1,6 @@
 {
     "paths": {
-        "root": {
-            "bundle": "/RSVPSB",
-            "staging": "http://70.183.17.183/"
-        },
-        "js": {
-            "app": "app/scripts/**/*.js"
-        },
+        "assets": ["app/assets/**"],
         "css": {
             "app": "app/styles/app.scss",
             "vendor": [
@@ -19,7 +13,13 @@
             "templates": ["app/templates/**/*.hbs", "!app/templates/partials/**"],
             "partials": "app/templates/partials"
         },
-        "assets": ["app/assets/**"]
+        "js": {
+            "app": "app/scripts/**/*.js"
+        },
+        "root": {
+            "bundle": "/RSVPSB",
+            "staging": "http://70.183.17.183/"
+        }
     },
     "messages" : {
         "intro" : "Run 'npm run help' to list available tasks"

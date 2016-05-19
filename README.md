@@ -1,4 +1,5 @@
-# CredCardCalc
+# Credit Card Payment Calculator
+Adaptation of js calculator from [finanzaspersonales.com](http://www.finanzaspersonales.com.co/calculadoras/articulo/tarjeta-credito/39934), adapted and enhanced, according with the best practices for JS coding.
 
 ## Pending tasks: 
 1. --Update package.json.--
@@ -9,14 +10,11 @@
 ```javascript
 //  vars
 var gulp = require('gulp'),
-    del = require('del'),
     sync = require('browser-sync').create(),
     taskListing = require('gulp-task-listing'),
     uglify = require('gulp-uglify'),
     sourcemaps = require('gulp-sourcemaps'),
-    minifyCSS = require('gulp-minify-css'),
     browserify = require('browserify'),
-    gulp = require('gulp'),
     imagemin = require('gulp-imagemin'),
     pngquant = require('imagemin-pngquant'),
     source = require('vinyl-source-stream'),
@@ -25,9 +23,6 @@ var gulp = require('gulp'),
     notify = require('gulp-notify'),
     concat = require('gulp-concat'),
     rename = require('gulp-rename'),
-    replace = require('gulp-replace'),
-    less = require('gulp-less'),
-    handlebars = require('gulp-compile-handlebars'),
     bundle = false,
     bundler = browserify({
         entries: ['./app/scripts/index.js'],
@@ -115,9 +110,7 @@ gulp.task('bundle:minifyCSS', function () {
 gulp.task('bundle', ['bundle:minifyCSS', 'bundle:uglifyJS', 'bundle:img'], function () {
     gutil.log('Bundle root directory is now ' + gutil.colors.magenta.bold(getRootDir()));
 });
-
 ```
-
 
 ## References
 [abduzeedo ui design analytics](http://abduzeedo.com/ui-design-analytics)
