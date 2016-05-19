@@ -14,7 +14,9 @@ var PATHS = require('./utils/config').paths,
     gulp = require('gulp'),
     gutil = require('gulp-util'),
     handlebars = require('gulp-compile-handlebars'),
+    minifyCSS = require('gulp-clean-css'),
     rename = require('gulp-rename'),
+    replace = require('gulp-replace'),
     sass = require('gulp-sass'),
     sync = require('browser-sync').create(),
     watchify = require('watchify');
@@ -31,9 +33,9 @@ gulp.task('base',     ['base:assets', 'base:styles', 'base:scripts', 'base:templ
 // gulp.task('default',  ['base',        'default:server', 'default:watch']);
 gulp.task('default',  ['default:server', 'default:watch']);
 
-// gulp.task('bundle', ['bundle:minifyCSS', 'bundle:uglifyJS', 'bundle:img'], function () {
-//     gutil.log('Bundle root directory is now ' + gutil.colors.magenta.bold(getRootDir()));
-// });
+gulp.task('bundle', ['bundle:minifyCSS', 'bundle:uglifyJS', 'bundle:img'], function () {
+    gutil.log('Bundle root directory is now ' + gutil.colors.magenta.bold(getRootDir()));
+});
 
 // base tasks:
 gulp.task('base:assets', function () {
@@ -54,7 +56,7 @@ gulp.task('base:templates', function () {
         //.pipe(sync.reload({stream: true}));
 });
 
-gulp.task('base:styles', ['styles:vendor', 'styles:sass']);
+gulp.task('base:styles', ['styles:sass', 'styles:vendor']);
 
 // styles:
 gulp.task('styles:sass', function () {
@@ -115,4 +117,10 @@ gulp.task('bundle:minifyCSS', function () {
         .pipe(minifyCSS())
         .pipe(gulp.dest('./public/css'));
 });
+
+
+//--------------------------FUNCTIONS--------------------------
+function getRootDir() {
+    return PATHS.root[gutil.env.target] || PATHS.root.bundle;
+}
 
