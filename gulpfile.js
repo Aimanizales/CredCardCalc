@@ -1,14 +1,23 @@
-// Module dependencies
-//   "scripts": {
+//   Module dependencies
 //   "start": "gulp clean && gulp",
 //   "build:local": "gulp clean && gulp base && gulp bundle:img",
 //   "build:prod": "gulp clean && gulp base && gulp bundle",
 //   "help": "gulp reference"
-// 
+
 var PATHS = require('./utils/config').paths,
     TEMPLATE_CONTEXT_DATA = require('./app/templates/utils/values'),
     TEMPLATE_HELPERS = require('./app/templates/utils/helpers'),
     ROOT_REPLACEMENT_EXP = /((?:src|url|href)\s*[=(:]\s*["']?\s*)(\/[^"'\/])/gi,
+    browserify = require('browserify'),
+    browserSync = require('browser-sync').create(),
+    bundle = false,
+    bundler = browserify({
+        entries: ['./app/scripts/app.js'],
+        debug: true, // Gives us sourcemapping
+        cache: {},
+        packageCache: {},
+        fullPaths: true // Requirement of watchify
+    }),
     concat = require('gulp-concat'),
     del = require('del'),
     gulp = require('gulp'),
@@ -18,7 +27,6 @@ var PATHS = require('./utils/config').paths,
     rename = require('gulp-rename'),
     replace = require('gulp-replace'),
     sass = require('gulp-sass'),
-    browserSync = require('browser-sync').create(),
     watchify = require('watchify');
 
 /**
@@ -30,8 +38,7 @@ var PATHS = require('./utils/config').paths,
 
 //============================= main tasks =============================
 gulp.task('default', ['base', 'default:server', 'default:watch']);
-// gulp.task('base',    ['base:assets', 'base:styles', 'base:scripts', 'base:templates']);
-gulp.task('base',    ['base:assets', 'base:templates', 'base:styles']);
+gulp.task('base',    ['base:assets', 'base:templates', 'base:styles', 'base:scripts']);
 gulp.task('bundle',  ['bundle:minifyCSS', 'bundle:uglifyJS', 'bundle:img'], function () {
     gutil.log('Bundle root directory is now ' + gutil.colors.magenta.bold(getRootDir()));
 });
@@ -55,6 +62,36 @@ gulp.task('base:templates', function () {
         .pipe(gulp.dest('./public'))
         .pipe(browserSync.reload({stream:true}));
 });
+
+//============================= scripts =============================
+gulp.task('base:scripts', ['scripts:browserify']);
+gulp.task('scripts:browserify', browserifyBundle);
+gulp.task('scripts:js', function () {
+    // task to concatenate vendor minified scripts
+    gulp.src(PATHS.js.vendor)
+        .pipe(concat('vendor.js'))
+        .pipe(gulp.dest('./public/js'));
+});
+
+function browserifyBundle() {
+    var updateStart = Date.now(),
+        bundlerResult = bundler.bundle()
+        .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+        .pipe(source('app.js'))
+        .pipe(gulp.dest('./public/js'))
+        .pipe(sync.reload({
+            stream: true
+        }));
+    return bundlerResult;
+}
+
+function onCodeUpdate() {
+    var updateStart = Date.now();
+
+    gutil.log('Updating', gutil.colors.cyan("'browserify'"), '...');
+    browserifyBundle();
+    gutil.log('Finished', gutil.colors.cyan("'browserify'"), 'after ' + gutil.colors.magenta((Date.now() - updateStart) + 'ms'));
+}
 
 
 //============================= styles =============================
@@ -106,6 +143,15 @@ gulp.task('bundle:minifyCSS', function () {
         .pipe(replace(ROOT_REPLACEMENT_EXP, '$1' + getRootDir() + '$2'))
         .pipe(minifyCSS())
         .pipe(gulp.dest('./public/css'));
+});
+gulp.task('bundle:uglifyJS', function () {
+    gulp.src('./public/js/app.js')
+        .pipe(sourcemaps.init({
+            loadMaps: true
+        }))
+        .pipe(uglify())
+        .pipe(sourcemaps.write('./public/js/'))
+        .pipe(gulp.dest('./public/js'));
 });
 
 

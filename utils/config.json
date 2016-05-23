@@ -17,8 +17,8 @@
             "app": "app/scripts/**/*.js"
         },
         "root": {
-            "bundle": "/RSVPSB",
-            "staging": "http://70.183.17.183/"
+            "bundle": "",
+            "staging": ""
         }
     },
     "messages" : {
