@@ -11,7 +11,7 @@
 
 <body id="viewport" class="main-view">
     <header class="header pure-g">
-        <h1>Credit Card Payment Calculator</h1>
+        <h1>Calculadora crédito</h1>
         
         {{!-- 
         <div class="font-size-widget pure-u-1-6 pure-u-lg-1-12">
@@ -99,7 +99,9 @@
     </footer>
     {{> modal}}
     --}}
-    <script type="text/javascript" src="{{src.scripts}}"></script>
+    {{#each src.scripts}}
+    <script type="text/javascript" src="{{this}}"></script>
+    {{/each}}
     Latest update: {{now }}
 </body>
 </html>

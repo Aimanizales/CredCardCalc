@@ -1,6 +1,6 @@
 {
     "src": {
-        "scripts": "js/app.js",
+        "scripts": ["js/vendor.js", "js/app.js"],
         "styles": ["css/vendor.css", "css/app.css"]
     },
     "rsvp": {

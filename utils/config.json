@@ -14,7 +14,11 @@
             "partials": "app/templates/partials"
         },
         "js": {
-            "app": "app/scripts/**/*.js"
+            "app": "app/scripts/**/*.js",
+            "vendor": [
+                "node_modules/jquery/dist/jquery.min.js",
+                "node_modules/numbro/dist/numbro.min.js"
+            ]
         },
         "root": {
             "bundle": "",

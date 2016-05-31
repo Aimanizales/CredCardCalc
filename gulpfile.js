@@ -27,6 +27,7 @@ var PATHS = require('./utils/config').paths,
     rename = require('gulp-rename'),
     replace = require('gulp-replace'),
     sass = require('gulp-sass'),
+    source = require('vinyl-source-stream'),
     watchify = require('watchify');
 
 /**
@@ -63,40 +64,8 @@ gulp.task('base:templates', function () {
         .pipe(browserSync.reload({stream:true}));
 });
 
-//============================= scripts =============================
-gulp.task('base:scripts', ['scripts:browserify']);
-gulp.task('scripts:browserify', browserifyBundle);
-gulp.task('scripts:js', function () {
-    // task to concatenate vendor minified scripts
-    gulp.src(PATHS.js.vendor)
-        .pipe(concat('vendor.js'))
-        .pipe(gulp.dest('./public/js'));
-});
-
-function browserifyBundle() {
-    var updateStart = Date.now(),
-        bundlerResult = bundler.bundle()
-        .on('error', gutil.log.bind(gutil, 'Browserify Error'))
-        .pipe(source('app.js'))
-        .pipe(gulp.dest('./public/js'))
-        .pipe(sync.reload({
-            stream: true
-        }));
-    return bundlerResult;
-}
-
-function onCodeUpdate() {
-    var updateStart = Date.now();
-
-    gutil.log('Updating', gutil.colors.cyan("'browserify'"), '...');
-    browserifyBundle();
-    gutil.log('Finished', gutil.colors.cyan("'browserify'"), 'after ' + gutil.colors.magenta((Date.now() - updateStart) + 'ms'));
-}
-
-
 //============================= styles =============================
 gulp.task('base:styles', ['styles:sass', 'styles:vendor']);
-
 gulp.task('styles:sass', function () {
     gulp.src(PATHS.css.app)
         .pipe(sass())
@@ -110,6 +79,42 @@ gulp.task('styles:vendor', function () {
         .pipe(gulp.dest('./public/css'));
 });
 
+
+//============================= scripts =============================
+gulp.task('base:scripts', ['scripts:js', 'scripts:jsvendor']);
+gulp.task('scripts:js', function () {
+    // task to concatenate vendor minified scripts
+    gulp.src(PATHS.js.app)
+        .pipe(concat('app.js'))
+        .pipe(gulp.dest('./public/js'));
+});
+
+gulp.task('scripts:jsvendor', function () {
+    // task to concatenate vendor minified scripts
+    gulp.src(PATHS.js.vendor)
+        .pipe(concat('vendor.js'))
+        .pipe(gulp.dest('./public/js'));
+});
+
+// gulp.task('scripts:browserify', browserifyBundle);
+// function browserifyBundle() {
+//     var updateStart = Date.now(),
+//         bundlerResult = bundler.bundle()
+//         .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+//         .pipe(source('app.js'))
+//         .pipe(gulp.dest('./public/js'))
+//         .pipe(browserSync.reload({
+//             stream: true
+//         }));
+//     return bundlerResult;
+// }
+// function onCodeUpdate() {
+//     var updateStart = Date.now();
+
+//     gutil.log('Updating', gutil.colors.cyan("'browserify'"), '...');
+//     browserifyBundle();
+//     gutil.log('Finished', gutil.colors.cyan("'browserify'"), 'after ' + gutil.colors.magenta((Date.now() - updateStart) + 'ms'));
+// }
 
 //============================= clean =============================
 gulp.task('clean', function () {
@@ -159,11 +164,3 @@ gulp.task('bundle:uglifyJS', function () {
 function getRootDir() {
     return PATHS.root[gutil.env.target] || PATHS.root.bundle;
 }
-
-function onCodeUpdate() {
-    var updateStart = Date.now();
-    gutil.log('Updating', gutil.colors.cyan("'browserify'"), '...');
-    browserifyBundle();
-    gutil.log('Finished', gutil.colors.cyan("'browserify'"), 'after ' + gutil.colors.magenta((Date.now() - updateStart) + 'ms'));
-}
-

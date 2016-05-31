@@ -24,7 +24,8 @@
     "public": "./public/"
   },
   "dependencies": {
-    "jquery": "^2.2.3",
+    "jquery": "^2.2.4",
+    "numbro": "^1.7.1",
     "purecss": "^0.6.0"
   },
   "devDependencies": {
@@ -43,6 +44,7 @@
     "gulp-sass": "^2.3.1",
     "handlebars": "^4.0.5",
     "moment": "^2.13.0",
+    "vinyl-source-stream": "^1.1.0",
     "watchify": "latest"
   }
 }
