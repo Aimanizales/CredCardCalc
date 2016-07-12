@@ -1,11 +1,12 @@
 # Credit Card Payment Calculator
 Adaptation of js calculator from [finanzaspersonales.com](http://www.finanzaspersonales.com.co/calculadoras/articulo/tarjeta-credito/39934), adapted and enhanced, according with the best practices for JS coding.
 
-## Pending tasks: 
+## Pending tasks:
 1. --Update package.json.--
 2. Update gulpfile.js.
 3. Run scripts, check each task and see how public folder changes for each case.
 4. Modify the less file.
+5. http://www.banrep.gov.co/es/contenidos/page/qu-tasa-inter-s Increase 
 
 ```javascript
 //  vars
