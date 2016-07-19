@@ -116,3 +116,6 @@ gulp.task('bundle', ['bundle:minifyCSS', 'bundle:uglifyJS', 'bundle:img'], funct
 ## References
 [abduzeedo ui design analytics](http://abduzeedo.com/ui-design-analytics)
 https://comparabien.com.co/faq/que-tasa-mes-vencido-mv
+
+http://abduzeedo.com/withings-ios-concept-design
+http://www.uplabs.com/
